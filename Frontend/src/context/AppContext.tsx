@@ -37,6 +37,7 @@ const initializeMockData = () => {
       { id: 'student1', name: 'Alice Johnson', email: 'alice@student.edu', role: 'student', password: 'student123' },
       { id: 'student2', name: 'Bob Smith', email: 'bob@student.edu', role: 'student', password: 'student123' },
       { id: 'student3', name: 'Carol White', email: 'carol@student.edu', role: 'student', password: 'student123' },
+      { id: 'student4', name: 'David Brown', email: 'david@student.edu', role: 'student', password: 'student123' },
       { id: 'admin1', name: 'Dr. Emily Brown', email: 'emily@prof.edu', role: 'admin', password: 'admin123' }
     ],
     courses: [
@@ -46,7 +47,7 @@ const initializeMockData = () => {
         code: 'CS301', 
         professorId: 'admin1',
         semester: 'Fall 2025',
-        enrolledStudents: ['student1', 'student2', 'student3']
+        enrolledStudents: ['student1', 'student2', 'student3', 'student4']
       },
       { 
         id: 'course2', 
@@ -54,7 +55,23 @@ const initializeMockData = () => {
         code: 'CS402', 
         professorId: 'admin1',
         semester: 'Fall 2025',
-        enrolledStudents: ['student1', 'student2']
+        enrolledStudents: ['student1', 'student2', 'student4']
+      },
+      { 
+        id: 'course3', 
+        name: 'Introduction to Cryptography', 
+        code: 'CS419', 
+        professorId: 'admin1',
+        semester: 'Fall 2025',
+        enrolledStudents: ['student1', 'student2', 'student3', 'student4']
+      },
+      { 
+        id: 'course4', 
+        name: 'Introduction to Design', 
+        code: 'DE109', 
+        professorId: 'admin1',
+        semester: 'Fall 2025',
+        enrolledStudents: ['student1', 'student2', 'student4']
       }
     ],
     assignments: [
@@ -102,23 +119,20 @@ const initializeMockData = () => {
     localStorage.setItem('assignmentSystemData', JSON.stringify(defaultMockData));
     return defaultMockData;
   }
-  
-  // Parse existing data and ensure all required fields exist
+
   const parsedData = JSON.parse(existingData);
   const migratedData = {
     ...defaultMockData,
     ...parsedData,
     courses: parsedData.courses || defaultMockData.courses,
     groups: parsedData.groups || defaultMockData.groups,
-    // Ensure assignments have the new fields
     assignments: (parsedData.assignments || []).map((a: any) => ({
       ...a,
       courseId: a.courseId || 'course1',
       submissionType: a.submissionType || 'individual'
     }))
   };
-  
-  // Save the migrated data
+
   localStorage.setItem('assignmentSystemData', JSON.stringify(migratedData));
   return migratedData;
 };
@@ -129,7 +143,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return initialData;
   });
   const [currentUser, setCurrentUser] = useState<any>(() => {
-    // Initialize currentUser from localStorage
     const savedUser = localStorage.getItem('currentUser');
     const authToken = localStorage.getItem('authToken');
     const tokenExpiry = localStorage.getItem('tokenExpiry');
@@ -140,7 +153,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       if (Date.now() < expiryTime) {
         return JSON.parse(savedUser);
       } else {
-        // Token expired, clear everything
         localStorage.removeItem('currentUser');
         localStorage.removeItem('authToken');
         localStorage.removeItem('tokenExpiry');
@@ -154,7 +166,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     localStorage.setItem('assignmentSystemData', JSON.stringify(data));
   }, [data]);
 
-  // Persist currentUser to localStorage
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -163,15 +174,13 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
   }, [currentUser]);
 
-  // Check token expiry periodically (every minute)
   useEffect(() => {
     const checkTokenExpiry = () => {
       const tokenExpiry = localStorage.getItem('tokenExpiry');
       if (tokenExpiry) {
         const expiryTime = parseInt(tokenExpiry);
         if (Date.now() >= expiryTime) {
-          // Token expired, logout user
-          console.log('🔐 Session expired. Please login again.');
+          console.log('Session expired. Please login again.');
           setCurrentUser(null);
           localStorage.removeItem('currentUser');
           localStorage.removeItem('authToken');
@@ -180,11 +189,10 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }
     };
 
-    const interval = setInterval(checkTokenExpiry, 60000); // Check every minute
+    const interval = setInterval(checkTokenExpiry, 60000); 
     return () => clearInterval(interval);
   }, []);
 
-  // Clean up orphaned submissions on mount
   useEffect(() => {
     if (data) {
       const validAssignmentIds = data.assignments.map((a: any) => a.id);
@@ -192,7 +200,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         validAssignmentIds.includes(s.assignmentId)
       );
       
-      // Only update if there are orphaned submissions
       if (cleanedSubmissions.length !== data.submissions.length) {
         setData((prev: any) => ({
           ...prev,
@@ -205,7 +212,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const login = (email: string, password: string): boolean => {
     const user = data.users.find((u: any) => u.email === email && u.password === password);
     if (user) {
-      // Simulate JWT token generation
       const mockToken = btoa(JSON.stringify({
         userId: user.id,
         email: user.email,
@@ -214,7 +220,6 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         expiresIn: '24h'
       }));
       
-      // Store token in localStorage (simulating JWT flow)
       localStorage.setItem('authToken', mockToken);
       localStorage.setItem('tokenExpiry', (Date.now() + 24 * 60 * 60 * 1000).toString());
       

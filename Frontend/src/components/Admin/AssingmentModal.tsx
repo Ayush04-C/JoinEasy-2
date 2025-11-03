@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, BookOpen, Plus, ExternalLink, Users, CheckCircle, XCircle, Edit2, Trash2, Search, Filter } from 'lucide-react';
+import { ArrowLeft, BookOpen, Plus, ExternalLink, Users, User ,CheckCircle, XCircle, Edit2, Trash2, Search, Filter } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import Navigation from '../Navigationbar/Navigation';
 import InteractiveBg from '../../animations/Interactivebg';
@@ -374,10 +374,15 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
                         <h3 className="text-xl font-semibold text-white">{assignment.title}</h3>
-                        {isGroupAssignment && (
+                        {isGroupAssignment ? (
                           <span className="flex items-center space-x-1 bg-purple-600/30 text-purple-300 text-xs px-2 py-1 rounded-full">
                             <Users className="w-3 h-3" />
                             <span>Group</span>
+                          </span>
+                        ) : (
+                          <span className="flex items-center space-x-1 bg-blue-600/30 text-blue-300 text-xs px-2 py-1 rounded-full">
+                            <User className="w-3 h-3" />
+                            <span>Individual</span>
                           </span>
                         )}
                       </div>
@@ -438,10 +443,11 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
                     </div>
                   </div>
 
-                  <div className="space-y-3 backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-white/10">
+                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-white/10">
                     <h4 className="text-sm font-semibold text-white mb-3">
                       {isGroupAssignment ? 'Group Progress' : 'Student Progress'}
                     </h4>
+                    <div className="max-h-50 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
                     {isGroupAssignment ? (
                       // Show groups
                       assignmentGroups.length > 0 ? (
@@ -469,11 +475,27 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
                                   )}
                                 </div>
                               </div>
-                              <div className="text-xs text-white/60">
-                                Members: {group.members.map((memberId: string) => {
-                                  const member = data.users?.find((u: any) => u.id === memberId);
-                                  return member?.name;
-                                }).join(', ')}
+                              <div className="text-xs text-white/70">
+                                <span className="font-medium">Members:</span>
+                                <div className="mt-1 flex flex-wrap gap-1">
+                                  {group.members.map((memberId: string) => {
+                                    const member = data.users?.find((u: any) => u.id === memberId);
+                                    const isLeader = group.leaderId === memberId;
+                                    return (
+                                      <span
+                                        key={memberId}
+                                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs ${
+                                          isLeader
+                                            ? 'bg-yellow-600/30 text-yellow-300 font-semibold border border-yellow-500/50'
+                                            : 'bg-gray-700/50 text-white/80'
+                                        }`}
+                                      >
+                                        {member?.name}
+                                        {isLeader && ' (Leader)'}
+                                      </span>
+                                    );
+                                  })}
+                                </div>
                               </div>
                             </div>
                           );
@@ -512,6 +534,7 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
                         );
                       })
                     )}
+                    </div>
                   </div>
                 </div>
               </ScrollFadeIn>
