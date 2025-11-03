@@ -5,6 +5,9 @@ import Navigation from '../Navigationbar/Navigation';
 import InteractiveBg from '../../animations/Interactivebg';
 import ScrollFadeIn from '../../animations/ScrollFadeIn';
 import { gsap } from 'gsap';
+import LiquidProgressBar from "../../animations/Liquidbar";
+
+
 
 const StudentCourseAssignments = lazy(() => import('./StudentAssingmentCard'));
 
@@ -196,6 +199,8 @@ const StudentDashboard = () => {
     course.enrolledStudents?.includes(currentUser?.id)
   ) || [];
 
+  const noOfCoursesStudentEnrolled = enrolledCourses.length;
+
   // Get all assignments for enrolled courses
   const assignments = data?.assignments?.filter((assignment: any) => 
     enrolledCourses.some((course: any) => course.id === assignment.courseId)
@@ -233,7 +238,7 @@ const StudentDashboard = () => {
 
   return (
 
-    <div className="fixed top-14 sm:top-20 left-0 w-screen h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-5rem)] overflow-y-auto pb-8">
+    <div className="fixed top-14 z-50 sm:top-20 left-0 w-screen h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-5rem)] overflow-y-auto pb-8">
       <style>
         {`
           .bento-section {
@@ -281,30 +286,24 @@ const StudentDashboard = () => {
           glowColor={glowColor}
         />
       )}
-      
       <InteractiveBg />
       <Navigation />
-      
-     
+
       <div className="bento-section max-w-screen mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ScrollFadeIn direction="up" duration={600} delay={0} threshold={0.05}>
           <div className="mb-8 ">
             <h2 className="text-2xl font-bold text-white mb-2 ">My Courses</h2>
             <p className="text-white">View all your enrolled courses for this semester</p>
+            <p className="text-white">Number of Courses This Semester: {noOfCoursesStudentEnrolled}</p>
           </div>
         </ScrollFadeIn>
         <ScrollFadeIn direction="up" duration={700} delay={100} threshold={0.05}>
           <div className="card card--border-glow rounded-xl shadow-sm border border-gray-200 p-6 mb-8 relative transition-all duration-300 ease-in-out" style={{color: 'black', opacity: '0.8'}}>
             <div className="flex flex-row items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Overall Progress</h3>
-              <span className="text-2xl font-bold text-white">{Math.round(progressPercentage)}%</span>
+              <span className="text-2xl font-bold text-white"><LiquidProgressBar progress={Math.round(progressPercentage)} /></span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-              <div
-                className="bg-indigo-600 h-4 rounded-full transition-all duration-500"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
+            <LiquidProgressBar progress={Math.round(progressPercentage)} height={30} color="#6366F1" />
             <div className="flex items-center justify-between mt-3 text-sm text-white">
               <span>{submittedCount} of {totalCount} assignments submitted</span>
               <span>{totalCount - submittedCount} pending</span>
@@ -330,10 +329,10 @@ const StudentDashboard = () => {
                 threshold={0.1}
               >
                 <div
-                  className="card card--border-glow border border-gray-300 rounded-xl relative overflow-hidden transition-all duration-300 ease-in-out hover:scale-102 cursor-pointer"
+                  className="card card--border-glow backdrop-blur-lg border border-gray-300 rounded-xl relative overflow-hidden transition-all duration-300 ease-in-out hover:scale-102 cursor-pointer"
                   onClick={() => handleCourseClick(course.id)}
                 >
-                  <div className="backdrop-blur-sm bg-black/20 p-6 h-full">
+                  <div className="p-6 h-full">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-xl font-bold text-white mb-1">{course.name}</h3>
@@ -348,12 +347,11 @@ const StudentDashboard = () => {
                         <span className="font-medium text-white">{courseTotalCount}</span>
                       </div>
                       
-                      <div className="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden">
-                        <div
-                          className="bg-indigo-500 h-2 rounded-full transition-all duration-500"
-                          style={{ width: `${courseTotalCount > 0 ? (courseSubmittedCount / courseTotalCount) * 100 : 0}%` }}
-                        />
-                      </div>
+                      <LiquidProgressBar 
+                        progress={courseTotalCount > 0 ? Math.round((courseSubmittedCount / courseTotalCount) * 100) : 0} 
+                        height={20} 
+                        color="#6366F1" 
+                      />
                       
                       <div className="flex items-center justify-between text-xs text-white/80">
                         <span>{courseSubmittedCount} submitted</span>

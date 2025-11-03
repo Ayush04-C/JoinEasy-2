@@ -4,6 +4,7 @@ import { useApp } from '../../context/AppContext';
 import Navigation from '../Navigationbar/Navigation';
 import InteractiveBg from '../../animations/Interactivebg';
 import ScrollFadeIn from '../../animations/ScrollFadeIn';
+import LiquidProgressBar from "../../animations/Liquidbar";
 
 interface ProfessorCourseManagementProps {
   courseId: string;
@@ -369,8 +370,8 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
                 duration={700} 
                 delay={index * 100}
               >
-                <div className="backdrop-blur-sm bg-black/30 rounded-xl shadow-lg border border-white/20 p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6 space-y-4 lg:space-y-0">
+                <div className="bg-black/10 bg-opacity-80 rounded-[30px] shadow-lg border border-white/20 p-6">
+                  <div className="flex flex-col backdrop-blur-sm lg:flex-row lg:items-start lg:justify-between mb-6 space-y-4 lg:space-y-0">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
                         <h3 className="text-xl font-semibold text-white">{assignment.title}</h3>
@@ -429,17 +430,14 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
                   </div>
 
                   <div className="mb-6">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 mt-2">
                       <span className="text-sm font-medium text-white/80">
                         {isGroupAssignment ? 'Group' : 'Student'} Submission Rate
                       </span>
                       <span className="text-sm font-semibold text-indigo-400">{Math.round(progressPercentage)}%</span>
                     </div>
-                    <div className="w-full bg-gray-700/50 rounded-full h-3 overflow-hidden">
-                      <div
-                        className="bg-indigo-600 h-3 rounded-full transition-all duration-500"
-                        style={{ width: `${progressPercentage}%` }}
-                      />
+                    <div className="w-full bg-gray-700/50 rounded-full h-6 overflow-hidden">
+                      <LiquidProgressBar progress={progressPercentage} />
                     </div>
                   </div>
 
@@ -582,8 +580,8 @@ const ProfessorCourseManagement = ({ courseId, onBack }: ProfessorCourseManageme
 
         {/* Create/Edit Assignment Modal */}
         {(showCreateModal || editingAssignment) && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-gray-900 rounded-xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg border border-white/20">
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-opacity-80 rounded-[30px] p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-lg border border-white/20">
               <h3 className="text-xl font-bold text-white mb-4">
                 {editingAssignment ? 'Edit Assignment' : 'Create New Assignment'}
               </h3>

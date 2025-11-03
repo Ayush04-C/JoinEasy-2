@@ -5,6 +5,9 @@ import Navigation from '../Navigationbar/Navigation';
 import InteractiveBg from '../../animations/Interactivebg';
 import ScrollFadeIn from '../../animations/ScrollFadeIn';
 import FadeContent from '../../animations/FadeContent';
+import ConfettiButton from "../../animations/confettie";
+
+
 
 interface StudentCourseAssignmentsProps {
   courseId: string;
@@ -19,7 +22,6 @@ const StudentCourseAssignments = ({ courseId, onBack }: StudentCourseAssignments
   const [groupName, setGroupName] = useState('');
   const [selectedMembers, setSelectedMembers] = useState<string[]>([currentUser.id]);
 
-  // Migration: Fix incomplete group submissions (when leader submitted but other members weren't updated)
   useEffect(() => {
     if (!data.groups || !data.submissions) return;
     
@@ -250,7 +252,7 @@ const StudentCourseAssignments = ({ courseId, onBack }: StudentCourseAssignments
           <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse">
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-5 h-5" />
-              <span className="font-medium">Action completed successfully!</span>
+              <span className="font-medium">Assignment completed successfully!</span>
             </div>
           </div>
         )}
@@ -425,7 +427,7 @@ const StudentCourseAssignments = ({ courseId, onBack }: StudentCourseAssignments
         {/* Confirmation Modal */}
         {showConfirmation && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-gray-900 rounded-xl p-6 max-w-sm w-full border border-white/20">
+            <div className="backdrop-blur-sm rounded-xl p-6 max-w-sm w-full border border-white/20">
               <h3 className="text-lg font-semibold text-white mb-2">Confirm Submission</h3>
               <p className="text-sm text-white/70 mb-4">
                 {assignments.find((a: any) => a.id === showConfirmation)?.submissionType === 'group'
@@ -433,7 +435,7 @@ const StudentCourseAssignments = ({ courseId, onBack }: StudentCourseAssignments
                   : 'Have you submitted your assignment?'}
               </p>
               <div className="flex space-x-3">
-                <button
+                <div 
                   onClick={() => {
                     const assignment = assignments.find((a: any) => a.id === showConfirmation);
                     if (assignment?.submissionType === 'group') {
@@ -443,10 +445,10 @@ const StudentCourseAssignments = ({ courseId, onBack }: StudentCourseAssignments
                       handleSubmit(showConfirmation);
                     }
                   }}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium transition-colors"
+                  className="flex-1"
                 >
-                  Yes, Submitted
-                </button>
+                  <ConfettiButton />
+                </div>
                 <button
                   onClick={() => setShowConfirmation(null)}
                   className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-lg font-medium transition-colors"

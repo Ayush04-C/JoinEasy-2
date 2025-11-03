@@ -6,6 +6,7 @@ interface AppContextType {
   currentUser: any;
   login: (email: string, password: string) => boolean;
   logout: () => void;
+  register: (name: string, email: string, password: string, role: string) => { success: boolean; message: string };
   addAssignment: (assignment: any) => void;
   updateSubmission: (assignmentId: string, studentId: string, submitted: boolean) => void;
   addCourse: (course: any) => void;
@@ -237,6 +238,40 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     localStorage.removeItem('tokenExpiry');
   };
 
+  const register = (name: string, email: string, password: string, role: string): { success: boolean; message: string } => {
+    // Check if user already exists
+    const existingUser = data.users.find((u: any) => u.email === email);
+    if (existingUser) {
+      return { success: false, message: 'User with this email already exists' };
+    }
+
+    // Validate inputs
+    if (!name || !email || !password || !role) {
+      return { success: false, message: 'All fields are required' };
+    }
+
+    if (password.length < 6) {
+      return { success: false, message: 'Password must be at least 6 characters' };
+    }
+
+    // Create new user
+    const newUser = {
+      id: `${role}${Date.now()}`,
+      name,
+      email,
+      role,
+      password
+    };
+
+    // Add user to data
+    setData((prev: any) => ({
+      ...prev,
+      users: [...prev.users, newUser]
+    }));
+
+    return { success: true, message: 'Registration successful! You can now login.' };
+  };
+
   const addAssignment = (assignment: any): void => {
     const newAssignment = {
       ...assignment,
@@ -352,6 +387,7 @@ const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         currentUser,
         login,
         logout,
+        register,
         addAssignment,
         updateAssignment,
         deleteAssignment,
