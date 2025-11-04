@@ -27,7 +27,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -104,6 +105,19 @@ button:focus-visible {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+/* Hide scrollbar completely at all zoom levels */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: -moz-scrollbars-none;
 }
 
 /* For the new slide-in/out global success toast */

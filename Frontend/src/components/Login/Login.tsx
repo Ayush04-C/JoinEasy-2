@@ -175,7 +175,7 @@
     };
 
     return (
-      <div className="min-h-screen flex items-center w-screen justify-center p-4 relative overflow-x-hidden">
+      <div className="min-h-screen flex items-center w-full justify-center p-2 sm:p-4 relative overflow-hidden">
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
           <div style={{ width: 'auto', height: '600px', position: 'relative' }}>
             <Orb
@@ -187,18 +187,18 @@
           </div>
         </div>
         <InteractiveBg />
-          <div className="backdrop-blur max-h-[95vh] md:h-auto overflow-y-auto md:overflow-visible justify-center item-center border border-white/20 rounded-2xl shadow-xl p-5 sm:p-8 w-full max-w-md transition-all duration-300 relative z-10 scrollbar-hide" style={{ pointerEvents: 'auto' }}>
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600/20 rounded-full mb-4 backdrop-blur-sm border border-indigo-500/30">
-                <BookOpen className="w-8 h-8 text-indigo-400" />
+          <div className="backdrop-blur max-h-[98vh] overflow-y-auto border border-white/20 rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 w-full max-w-[95vw] sm:max-w-md mx-auto transition-all duration-300 relative z-10 scrollbar-hide" style={{ pointerEvents: 'auto' }}>
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600/20 rounded-full mb-3 sm:mb-4 backdrop-blur-sm border border-indigo-500/30">
+                <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-400" />
               </div>
-              <h1 className="text-3xl text-[800] text-white">Assignment Hub</h1>
-              <p className="text-gray-400 mt-2">
+              <h1 className="text-2xl sm:text-3xl text-[800] text-white">Assignment Hub</h1>
+              <p className="text-sm sm:text-base text-gray-400 mt-2">
                 {isRegisterMode ? 'Create Your Account' : 'Student & Professor Portal'}
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               {/* Name Field (Only for Registration) */}
               {isRegisterMode && (
                 <div>
