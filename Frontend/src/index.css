@@ -94,6 +94,18 @@ button:focus-visible {
   scrollbar-color: rgba(99, 102, 241, 0.5) rgba(255, 255, 255, 0.05);
 }
 
+/* Hide scrollbar for mobile only */
+@media (max-width: 768px) {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 /* For the new slide-in/out global success toast */
 @keyframes slideIn {
   from {
@@ -125,7 +137,6 @@ button:focus-visible {
   animation: slideOut 0.5s ease-in forwards;
 }
 
-
 /* For the AnimatedCheckmark SVG */
 @keyframes stroke {
   100% {
@@ -134,7 +145,8 @@ button:focus-visible {
 }
 
 @keyframes scale {
-  0%, 100% {
+  0%,
+  100% {
     transform: none;
   }
   50% {

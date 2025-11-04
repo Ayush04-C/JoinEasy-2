@@ -175,7 +175,7 @@
     };
 
     return (
-      <div className="h-screen flex items-center w-screen justify-center p-4 relative">
+      <div className="min-h-screen flex items-center w-screen justify-center p-4 relative overflow-x-hidden">
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
           <div style={{ width: 'auto', height: '600px', position: 'relative' }}>
             <Orb
@@ -187,7 +187,7 @@
           </div>
         </div>
         <InteractiveBg />
-          <div className="backdrop-blur h-full justify-center item-center border border-white/20 rounded-2xl shadow-xl p-5 w-full max-w-md transition-all duration-300 relative z-10" style={{ pointerEvents: 'auto' }}>
+          <div className="backdrop-blur max-h-[95vh] md:h-auto overflow-y-auto md:overflow-visible justify-center item-center border border-white/20 rounded-2xl shadow-xl p-5 sm:p-8 w-full max-w-md transition-all duration-300 relative z-10 scrollbar-hide" style={{ pointerEvents: 'auto' }}>
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600/20 rounded-full mb-4 backdrop-blur-sm border border-indigo-500/30">
                 <BookOpen className="w-8 h-8 text-indigo-400" />
@@ -297,7 +297,7 @@
                     onChange={handlePasswordChange}
                     onBlur={() => password && validatePassword(password)}
                     disabled={isLoading || isSuccess}
-                    className={`w-85 pl-10 pr-12 py-3 bg-gray-800/50 border ${
+                    className={`w-full pl-10 pr-12 py-3 bg-gray-800/50 border ${
                       passwordError ? 'border-red-500' : 'border-gray-600'
                     } text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
                     placeholder="••••••••"
@@ -310,7 +310,7 @@
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors disabled:opacity-50"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-" />
+                      <EyeOff className="h-5 w-5" />
                     ) : (
                       <Eye className="h-5 w-5" />
                     )}
@@ -348,7 +348,7 @@
                       className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors disabled:opacity-50"
                     >
                       {showConfirmPassword ? (
-                        <EyeOff className="h-4 w-5" />
+                        <EyeOff className="h-5 w-5" />
                       ) : (
                         <Eye className="h-5 w-5" />
                       )}
