@@ -306,6 +306,7 @@ joineasy/
 ├── src/
 │   ├── animations/              # Custom animation components
 │   │   ├── FadeContent.tsx     # Fade transition animations
+│   │   ├── loader.tsx          # Loader animations
 │   │   ├── Interactivebg.tsx   # 3D interactive background
 │   │   ├── Liquidbar.tsx       # Liquid progress bar component
 │   │   ├── NavBar.tsx          # Animated navigation bar
