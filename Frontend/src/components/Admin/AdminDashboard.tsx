@@ -4,6 +4,7 @@ import { useApp } from '../../context/AppContext';
 import Navigation from '../Navigationbar/Navigation';
 import InteractiveBg from '../../animations/Interactivebg';
 import ScrollFadeIn from '../../animations/ScrollFadeIn';
+import Loader from '../../animations/loader';
 
 const ProfessorCourseManagement = lazy(() => import('./AssingmentModal'));
 
@@ -23,7 +24,7 @@ const AdminDashboard = () => {
     return (
       <Suspense fallback={
         <div className="fixed top-14 sm:top-20 left-0 w-screen h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-5rem)] flex items-center justify-center">
-          <div className="text-white text-xl">Loading...</div>
+          <div className="text-white text-xl"><Loader /></div>
         </div>
       }>
         <ProfessorCourseManagement 
