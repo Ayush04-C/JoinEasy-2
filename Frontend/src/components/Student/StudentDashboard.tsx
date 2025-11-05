@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState, Suspense, lazy} from 'react';
-import { BookOpen, ArrowRight } from 'lucide-react';
+import { BookOpen, ArrowRight} from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import Navigation from '../Navigationbar/Navigation';
 import InteractiveBg from '../../animations/Interactivebg';
 import ScrollFadeIn from '../../animations/ScrollFadeIn';
 import { gsap } from 'gsap';
 import LiquidProgressBar from "../../animations/Liquidbar";
+import Loader from '../../animations/loader';
 
 
 
@@ -225,7 +226,7 @@ const StudentDashboard = () => {
     return (
       <Suspense fallback={
         <div className="fixed top-14 sm:top-20 left-0 w-screen h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-5rem)] flex items-center justify-center">
-          <div className="text-white text-xl">Loading...</div>
+          <Loader />
         </div>
       }>
         <StudentCourseAssignments 
